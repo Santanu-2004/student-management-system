@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Student Management System</title>
+</head>
+
+<body>
+    <div class="mainContainer">
+        <h2>Student Data Form</h2>
+        <form id="studentForm">
+            <input type="text" name="name" placeholder="Enter Your Full Name">
+            <select name="degree" required>
+                <option value="">Select Degree</option>
+                <option value="B.Tech">B.Tech</option>
+                <option value="BCA">BCA</option>
+                <option value="B.Sc">B.Sc</option>
+                <option value="M.Tech">M.Tech</option>
+            </select>
+
+            <select name="department" required>
+                <option value="">Select Department</option>
+                <option value="CSE">CSE</option>
+                <option value="IT">IT</option>
+                <option value="ECE">ECE</option>
+                <option value="EEE">EEE</option>
+                <option value="Mechanical">Mechanical</option>
+            </select>
+            <select name="year" required>
+                <option value="">Select Year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+            </select>
+            <input type="text" name="Enroll" placeholder="Enrollment number">
+            <input type="text" name="mobile" placeholder="mobile number">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            console.log("JS loaded");
+
+            document.getElementById("studentForm").addEventListener("submit", async function (e) {
+                e.preventDefault();
+                console.log("Form submitted");
+
+                const formData = {
+                    name: document.querySelector('input[name="name"]').value,
+                    degree: document.querySelector('select[name="degree"]').value,
+                    department: document.querySelector('select[name="department"]').value,
+                    year: document.querySelector('select[name="year"]').value,
+                    enrollment: document.querySelector('input[name="Enroll"]').value,
+                    mobile: document.querySelector('input[name="mobile"]').value
+                };
+
+                try {
+                    const response = await fetch("http://localhost:3004/submit", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    //const result = await response.text();
+                    //alert(result);
+                    //document.getElementById("studentForm").reset();
+
+                    document.getElementById("message").innerText = result;
+                    document.getElementById("studentForm").reset();
+
+                    // redirect after 1 second
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 1000);
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

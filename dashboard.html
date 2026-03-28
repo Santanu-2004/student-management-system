@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        button {
+            padding: 6px 10px;
+            border: none;
+            background: red;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Student Dashboard</h2>
+
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Degree</th>
+                <th>Department</th>
+                <th>Year</th>
+                <th>Enrollment</th>
+                <th>Mobile</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function loadData() {
+            const res = await fetch("http://localhost:3004/students");
+            const data = await res.json();
+
+            const table = document.querySelector("#studentTable tbody");
+
+            data.forEach(student => {
+                const row = `
+        <tr>
+            <td>${student.name}</td>
+            <td>${student.degree}</td>
+            <td>${student.department}</td>
+            <td>${student.year}</td>
+            <td>${student.enrollment}</td>
+            <td>${student.mobile}</td>
+            <td>
+                <button onclick="deleteStudent('${student._id}')">Delete</button>
+            </td>
+        </tr>
+    `;
+                table.innerHTML += row;
+            });
+        }
+
+        async function deleteStudent(id) {
+            await fetch(`http://localhost:3004/student/${id}`, {
+                method: "DELETE"
+            });
+
+            location.reload(); // refresh page
+        }
+
+        loadData();
+    </script>
+
+</body>
+
+</html>
